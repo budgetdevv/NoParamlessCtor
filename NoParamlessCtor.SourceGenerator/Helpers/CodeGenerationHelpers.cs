@@ -11,28 +11,15 @@ namespace NoParamlessCtor.SourceGenerator.Helpers
     {
         public static string ToText(this Accessibility modifier)
         {
-            switch ((modifier))
+            return modifier switch
             {
-                case Accessibility.Public:
-                    return "public";
-
-                case Accessibility.Private:
-                    return "private";
-
-                case Accessibility.Protected:
-                    return "protected";
-
-                case Accessibility.Internal:
-                    return "internal";
-
-                case Accessibility.ProtectedAndInternal:
-                    return "protected internal";
-
-                // TODO: Figure this out
-                // return "private protected";
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(modifier), modifier, null);
-            }
+                Accessibility.Public => "public",
+                Accessibility.Private => "private",
+                Accessibility.Protected => "protected",
+                Accessibility.Internal => "internal",
+                Accessibility.ProtectedAndInternal => "protected internal",
+                _ => throw new ArgumentOutOfRangeException(nameof(modifier), modifier, null)
+            };
         }
 
         public static string ConstructNamespace(this ITypeSymbol typeSymbol)
