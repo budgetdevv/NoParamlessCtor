@@ -75,10 +75,10 @@ namespace NoParamlessCtor.SourceGenerator.Helpers
             this IPropertySymbol property,
             string keyword)
         {
-            return property.ContainsKeywords([ keyword ]);
+            return property.ContainsKeyword([ keyword ]);
         }
 
-        public static bool ContainsKeywords(
+        public static bool ContainsKeyword(
             this IPropertySymbol property,
             string[] keywords)
         {
