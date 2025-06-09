@@ -21,13 +21,31 @@ namespace Scratchpad
         public string Text2 = text2;
     }
 
+    [NoParamlessCtor]
+    public ref partial struct RefCtor(ref PrimaryCtor value)
+    {
+        public ref PrimaryCtor Value = ref value;
+    }
+
+    [NoParamlessCtor]
+    public ref partial struct InCtor(in PrimaryCtor value)
+    {
+        public ref readonly PrimaryCtor Value = ref value;
+    }
+
     internal static class Program
     {
         private static void Main(string[] args)
         {
-            var nonPrimaryCtor = new NonPrimaryCtor();
+            // Will generate compile error!
 
-            var primaryCtor = new PrimaryCtor();
+            // var nonPrimaryCtor = new NonPrimaryCtor();
+            //
+            // var primaryCtor = new PrimaryCtor();
+            //
+            // var refCtor = new RefCtor();
+            //
+            // var inCtor = new InCtor();
         }
     }
 }

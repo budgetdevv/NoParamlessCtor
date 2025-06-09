@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
@@ -44,30 +45,32 @@ namespace NoParamlessCtor.SourceGenerator
                     .Any(x => x.Name.ToString() == NO_PARAM_CTOR_ATTRIBUTE_NAME);
             }
 
-            static (StructDeclarationSyntax declaration, ITypeSymbol? typeSymbol) GetStructTypeSymbols(
+            static (StructDeclarationSyntax declaration, ITypeSymbol? typeSymbol, SemanticModel semanticModel) GetStructTypeSymbols(
                 GeneratorSyntaxContext context,
                 CancellationToken cancellationToken)
             {
                 var declaration = (StructDeclarationSyntax) context.Node;
 
-                if (ModelExtensions.GetDeclaredSymbol(context.SemanticModel, declaration, cancellationToken) is ITypeSymbol typeSymbol)
+                var semanticModel = context.SemanticModel;
+
+                if (ModelExtensions.GetDeclaredSymbol(semanticModel, declaration, cancellationToken) is ITypeSymbol typeSymbol)
                 {
-                    return (declaration, typeSymbol);
+                    return (declaration, typeSymbol, semanticModel);
                 }
 
-                return (declaration, null);
+                return (declaration, null, semanticModel);
             }
         }
 
         private static void GenerateSource(
             SourceProductionContext context,
-            ImmutableArray<(StructDeclarationSyntax declaration, ITypeSymbol? typeSymbol)> typeSymbols)
+            ImmutableArray<(StructDeclarationSyntax declaration, ITypeSymbol? typeSymbol, SemanticModel semanticModel)> typeSymbols)
         {
             // var codeByType = new Dictionary<ITypeSymbol, NamespaceBlock>(
             //     comparer: SymbolEqualityComparer.Default
             // );
 
-            foreach (var (declaration, typeSymbol) in typeSymbols)
+            foreach (var (declaration, typeSymbol, semanticModel) in typeSymbols)
             {
                 if (typeSymbol == null)
                 {
@@ -89,9 +92,36 @@ namespace NoParamlessCtor.SourceGenerator
 
                 else
                 {
+                    var paramTexts = new List<string>();
+
+                    foreach (var primaryCtorParam in primaryCtorParams)
+                    {
+                        var isRef = primaryCtorParam.ContainsKeyword([ "ref", "in" ]);
+
+                        string addedText;
+
+                        if (isRef)
+                        {
+                            var paramTypeInfo = semanticModel
+                                .GetTypeInfo(primaryCtorParam.Type!)
+                                .Type!;
+
+                            var paramTypeFQN = paramTypeInfo.GetFullyQualifiedName();
+
+                            addedText = $"ref Unsafe.NullRef<{paramTypeFQN}>()";
+                        }
+
+                        else
+                        {
+                            addedText = "default";
+                        }
+
+                        paramTexts.Add(addedText);
+                    }
+
                     paramlessCtorSuffix = string.Join(
                         ", ",
-                        primaryCtorParams.Select(x => "default")
+                        paramTexts
                     );
 
                     paramlessCtorSuffix = $": this({paramlessCtorSuffix})";
@@ -122,7 +152,11 @@ namespace NoParamlessCtor.SourceGenerator
 
             const string GLOBAL_IMPORTS =
             """
+            // Used by System.ObsoleteAttribute
             global using System;
+            
+            // Used by Unsafe.NullRef()
+            global using System.Runtime.CompilerServices;
             """;
 
             context.AddSource(
