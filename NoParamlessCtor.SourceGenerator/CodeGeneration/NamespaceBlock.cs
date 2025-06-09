@@ -1,7 +1,7 @@
 using Microsoft.CodeAnalysis;
 using NoParamlessCtor.SourceGenerator.Helpers;
 
-namespace NoParamlessCtor.SourceGenerator
+namespace NoParamlessCtor.SourceGenerator.CodeGeneration
 {
     public struct NamespaceBlock
     {

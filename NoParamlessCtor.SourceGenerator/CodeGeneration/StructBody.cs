@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace NoParamlessCtor.SourceGenerator
+namespace NoParamlessCtor.SourceGenerator.CodeGeneration
 {
     public readonly struct StructBody()
     {
