@@ -5,9 +5,24 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>preview</LangVersion>
+        <VersionPrefix>1.1.0</VersionPrefix>
+        <VersionSuffix>$(AlphaVersion)</VersionSuffix>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+
+
     <ItemGroup>
-      <ProjectReference Include="..\NoParamlessCtor.SourceGenerator\NoParamlessCtor.SourceGenerator.csproj" />
+        <None Include="../README.md" Pack="true" PackagePath="/"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference
+            Include="..\NoParamlessCtor.SourceGenerator\NoParamlessCtor.SourceGenerator.csproj"
+            ReferenceOutputAssembly="false"
+            OutputItemType="Analyzer"
+        />
     </ItemGroup>
 </Project>

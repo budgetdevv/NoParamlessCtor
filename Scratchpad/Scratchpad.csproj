@@ -9,14 +9,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference 
-            Include="..\NoParamlessCtor.SourceGenerator\NoParamlessCtor.SourceGenerator.csproj"
-          ReferenceOutputAssembly="false"
-          OutputItemType="Analyzer"
-        />
+        <ProjectReference Include="..\NoParamlessCtor\NoParamlessCtor.csproj" />
+        <ProjectReference Include="..\NoParamlessCtor.SourceGenerator\NoParamlessCtor.SourceGenerator.csproj"/>
 
         <ProjectReference
-            Include="..\NoParamlessCtor\NoParamlessCtor.csproj"
+            Include="..\NoParamlessCtor.SourceGenerator\NoParamlessCtor.SourceGenerator.csproj"
+            ReferenceOutputAssembly="false"
+            OutputItemType="Analyzer"
         />
     </ItemGroup>
 
