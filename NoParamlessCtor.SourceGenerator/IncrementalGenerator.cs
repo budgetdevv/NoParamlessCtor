@@ -66,10 +66,6 @@ namespace NoParamlessCtor.SourceGenerator
             SourceProductionContext context,
             ImmutableArray<(StructDeclarationSyntax declaration, ITypeSymbol? typeSymbol, SemanticModel semanticModel)> typeSymbols)
         {
-            // var codeByType = new Dictionary<ITypeSymbol, NamespaceBlock>(
-            //     comparer: SymbolEqualityComparer.Default
-            // );
-
             foreach (var (declaration, typeSymbol, semanticModel) in typeSymbols)
             {
                 if (typeSymbol == null)
@@ -141,8 +137,6 @@ namespace NoParamlessCtor.SourceGenerator
                 );
 
                 var namespaceBlock = new NamespaceBlock(structBlock);
-
-                // codeByType.Add(typeSymbol, namespaceBlock);
 
                 context.AddSource(
                     $"{typeSymbol.GetFullyQualifiedName()}.g.cs",
