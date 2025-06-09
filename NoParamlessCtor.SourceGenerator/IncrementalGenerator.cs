@@ -92,11 +92,13 @@ namespace NoParamlessCtor.SourceGenerator
 
                     foreach (var primaryCtorParam in primaryCtorParams)
                     {
-                        var isRef = primaryCtorParam.ContainsKeyword([ "ref", "in" ]);
+                        var isRef = primaryCtorParam.ContainsKeyword("ref");
+
+                        var isIn = primaryCtorParam.ContainsKeyword("in");
 
                         string addedText;
 
-                        if (isRef)
+                        if (isRef || isIn)
                         {
                             var paramTypeInfo = semanticModel
                                 .GetTypeInfo(primaryCtorParam.Type!)
@@ -104,7 +106,9 @@ namespace NoParamlessCtor.SourceGenerator
 
                             var paramTypeFQN = paramTypeInfo.GetFullyQualifiedName();
 
-                            addedText = $"ref Unsafe.NullRef<{paramTypeFQN}>()";
+                            var keyword = isRef ? "ref" : "in";
+
+                            addedText = $"{keyword} Unsafe.NullRef<{paramTypeFQN}>()";
                         }
 
                         else
