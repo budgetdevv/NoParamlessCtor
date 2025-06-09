@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scratchpad", "Scratchpad\Sc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoParamlessCtor.SourceGenerator", "NoParamlessCtor.SourceGenerator\NoParamlessCtor.SourceGenerator.csproj", "{95FAF29C-48BF-45E8-AE2B-F30597E5C647}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoParamlessCtor.Shared", "NoParamlessCtor.Shared\NoParamlessCtor.Shared.csproj", "{2D7E00D3-60C2-4DDB-9B8E-CB92EA472613}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,13 @@ Global
 		{95FAF29C-48BF-45E8-AE2B-F30597E5C647}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95FAF29C-48BF-45E8-AE2B-F30597E5C647}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95FAF29C-48BF-45E8-AE2B-F30597E5C647}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1E7EEE1-5C21-4994-A158-6D1E696FBA32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1E7EEE1-5C21-4994-A158-6D1E696FBA32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1E7EEE1-5C21-4994-A158-6D1E696FBA32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1E7EEE1-5C21-4994-A158-6D1E696FBA32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D7E00D3-60C2-4DDB-9B8E-CB92EA472613}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D7E00D3-60C2-4DDB-9B8E-CB92EA472613}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D7E00D3-60C2-4DDB-9B8E-CB92EA472613}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D7E00D3-60C2-4DDB-9B8E-CB92EA472613}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -13,19 +13,12 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
-
     <ItemGroup>
         <None Include="../README.md" Pack="true" PackagePath="/"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference
-            Include="..\NoParamlessCtor.SourceGenerator\NoParamlessCtor.SourceGenerator.csproj"
-            ReferenceOutputAssembly="false"
-            OutputItemType="Analyzer"
-        />
-
-        <!-- https://stackoverflow.com/questions/69165175/how-can-i-add-a-source-generator-as-nuget-reference -->
-        <None Include="$(OutputPath)\netstandard2.0\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+      <PackageReference Include="NoParamlessCtor.Shared" Version="*" />
+      <PackageReference Include="NoParamlessCtor.SourceGenerator" Version="*" />
     </ItemGroup>
 </Project>

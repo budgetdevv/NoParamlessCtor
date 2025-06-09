@@ -1,6 +1,6 @@
 using System;
 
-namespace NoParamlessCtor.SourceGenerator.Attributes
+namespace NoParamlessCtor.Shared.Attributes
 {
     [AttributeUsage(AttributeTargets.Struct, AllowMultiple = false)]
     public sealed class NoParamlessCtorAttribute: Attribute;

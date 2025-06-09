@@ -1,4 +1,4 @@
-﻿using NoParamlessCtor.SourceGenerator.Attributes;
+﻿using NoParamlessCtor.Shared.Attributes;
 
 namespace Scratchpad
 {
@@ -46,6 +46,16 @@ namespace Scratchpad
             // var refCtor = new RefCtor();
             //
             // var inCtor = new InCtor();
+
+            // Compiles fine with parameterized constructors
+
+            var nonPrimaryCtor = new NonPrimaryCtor("Hello");
+
+            var primaryCtor = new PrimaryCtor("Hello", "World");
+
+            var refCtor = new RefCtor(ref primaryCtor);
+
+            var inCtor = new InCtor(in primaryCtor);
         }
     }
 }

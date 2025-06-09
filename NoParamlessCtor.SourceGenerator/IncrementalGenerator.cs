@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using NoParamlessCtor.SourceGenerator.Attributes;
+using NoParamlessCtor.Shared.Attributes;
 using NoParamlessCtor.SourceGenerator.CodeGeneration;
 using NoParamlessCtor.SourceGenerator.Helpers;
 
