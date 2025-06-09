@@ -64,7 +64,9 @@ jobs:
 
       - name: Build NuGet package ( SourceGenerator )
         working-directory: NoParamlessCtor.SourceGenerator
-        run: dotnet pack -c Release -v:m --no-restore /p:DownloadNativeFiles=true /p:AlphaVersion=${{ steps.set_version.outputs.ALPHA_VERSION }}
+        run: |
+          dotnet build -c Release --no-restore
+          dotnet pack -c Release -v:m --no-restore /p:DownloadNativeFiles=true /p:AlphaVersion=${{ steps.set_version.outputs.ALPHA_VERSION }}
 
       - name: Publish NuGet package ( SourceGenerator )
         working-directory: NoParamlessCtor.SourceGenerator
