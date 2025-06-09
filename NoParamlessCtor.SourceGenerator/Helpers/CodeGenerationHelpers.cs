@@ -103,6 +103,18 @@ namespace NoParamlessCtor.SourceGenerator.Helpers
             return property.ContainsKeyword("required");
         }
 
+        public static bool ContainsKeyword(this ParameterSyntax parameter, string keyword)
+        {
+            return parameter.Modifiers.Any(x => x.ValueText == keyword);
+        }
+
+        public static bool ContainsKeyword(this ParameterSyntax parameter, string[] keywords)
+        {
+            return parameter.Modifiers
+                .Select(x => x.ValueText)
+                .Any(keywords.Contains);
+        }
+
         public static bool ContainsAttributes(this ISymbol symbol, string[] attributeNames)
         {
             return symbol
