@@ -143,7 +143,7 @@ namespace NoParamlessCtor.SourceGenerator
                 var namespaceBlock = new NamespaceBlock(structBlock);
 
                 context.AddSource(
-                    $"{typeSymbol.GetFullyQualifiedName()}.g.cs",
+                    structBlock.GenerateFileName(),
                     SourceText.From(namespaceBlock.Code, Encoding.UTF8)
                 );
             }

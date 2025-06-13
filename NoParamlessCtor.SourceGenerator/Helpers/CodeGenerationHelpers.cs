@@ -36,18 +36,19 @@ namespace NoParamlessCtor.SourceGenerator.Helpers
 
         public static string GetFullyQualifiedName(
             this ITypeSymbol typeSymbol,
-            bool includeGlobal = false)
+            SymbolDisplayGlobalNamespaceStyle globalNamespaceStyle = SymbolDisplayGlobalNamespaceStyle.Omitted,
+            SymbolDisplayGenericsOptions genericsOptions = SymbolDisplayGenericsOptions.IncludeTypeParameters)
         {
-            var fqn = typeSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+            var format = new SymbolDisplayFormat(
+                globalNamespaceStyle: globalNamespaceStyle,
+                typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
+                genericsOptions: genericsOptions,
+                miscellaneousOptions:
+                    SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers |
+                    SymbolDisplayMiscellaneousOptions.UseSpecialTypes
+            );
 
-            const string GLOBAL_PREFIX = "global::";
-
-            if (!includeGlobal && fqn.StartsWith(GLOBAL_PREFIX))
-            {
-                fqn = fqn.AsSpan(GLOBAL_PREFIX.Length).ToString();
-            }
-
-            return fqn;
+            return typeSymbol.ToDisplayString(format);
         }
 
         public static bool IsPartial(this ITypeSymbol typeSymbol)
