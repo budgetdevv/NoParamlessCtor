@@ -7,8 +7,6 @@
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     <IsRoslynComponent>true</IsRoslynComponent>
     <IncludeBuildOutput>false</IncludeBuildOutput>
-    <VersionPrefix>1.1.1</VersionPrefix>
-    <VersionSuffix>$(AlphaVersion)</VersionSuffix>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,7 +17,6 @@
     
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.6.0" />
   </ItemGroup>
-
 
   <!-- https://github.com/dotnet/roslyn/blob/main/docs/features/source-generators.cookbook.md#package-a-generator-as-a-nuget-package -->
   <PropertyGroup>

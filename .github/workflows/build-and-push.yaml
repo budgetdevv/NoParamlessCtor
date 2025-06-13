@@ -54,24 +54,6 @@ jobs:
           ALPHA_VERSION=alpha.${{ steps.bump_version.outputs.NEW_ALPHA_VERSION_NUMBER }}.${{ steps.vars.outputs.COMMIT_SHA }}
           echo "ALPHA_VERSION=$ALPHA_VERSION" >> $GITHUB_OUTPUT
 
-      - name: Build NuGet package ( Shared )
-        working-directory: NoParamlessCtor.Shared
-        run: dotnet pack -c Release -v:m --no-restore /p:DownloadNativeFiles=true /p:AlphaVersion=${{ steps.set_version.outputs.ALPHA_VERSION }}
-
-      - name: Publish NuGet package ( Shared )
-        working-directory: NoParamlessCtor.Shared
-        run: dotnet nuget push -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }} --skip-duplicate bin/Release/*.nupkg
-
-      - name: Build NuGet package ( SourceGenerator )
-        working-directory: NoParamlessCtor.SourceGenerator
-        run: |
-          dotnet build -c Release --no-restore
-          dotnet pack -c Release -v:m --no-restore /p:DownloadNativeFiles=true /p:AlphaVersion=${{ steps.set_version.outputs.ALPHA_VERSION }}
-
-      - name: Publish NuGet package ( SourceGenerator )
-        working-directory: NoParamlessCtor.SourceGenerator
-        run: dotnet nuget push -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }} --skip-duplicate bin/Release/*.nupkg
-
       - name: Build NuGet package ( Main )
         working-directory: NoParamlessCtor
         run: dotnet pack -c Release -v:m --no-restore /p:DownloadNativeFiles=true /p:AlphaVersion=${{ steps.set_version.outputs.ALPHA_VERSION }}
