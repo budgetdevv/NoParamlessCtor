@@ -103,6 +103,21 @@ namespace NoParamlessCtor.SourceGenerator.Helpers
                 .Any(keywords.Contains);
         }
 
+        public static bool ContainsKeyword(this StructDeclarationSyntax declarationSyntax, string[] keywords)
+        {
+            return declarationSyntax
+                .Modifiers
+                .Select(x => x.ValueText)
+                .Any(keywords.Contains);
+        }
+
+        public static bool ContainsKeyword(this StructDeclarationSyntax declarationSyntax, string keyword)
+        {
+            return declarationSyntax
+                .Modifiers
+                .Any(x => x.ValueText == keyword);
+        }
+
         public static bool ContainsAttributes(this ISymbol symbol, string[] attributeNames)
         {
             return symbol

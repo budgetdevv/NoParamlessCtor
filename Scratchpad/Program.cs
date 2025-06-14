@@ -41,6 +41,13 @@ namespace Scratchpad
         public ref readonly int Text2 = ref t2;
     }
 
+    [NoParamlessCtor]
+    public unsafe partial struct UnsafeCtor<T>(T* ptr)
+        where T: unmanaged
+    {
+        public T* Ptr = ptr;
+    }
+
     internal static class Program
     {
         private static void Main(string[] args)

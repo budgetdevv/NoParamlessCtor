@@ -136,6 +136,7 @@ namespace NoParamlessCtor.SourceGenerator
                 """);
 
                 var structBlock = new StructBlock(
+                    declaration,
                     typeSymbol,
                     structBody
                 );

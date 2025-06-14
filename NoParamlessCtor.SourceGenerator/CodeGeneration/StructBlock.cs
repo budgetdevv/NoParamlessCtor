@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using NoParamlessCtor.SourceGenerator.Helpers;
 
 namespace NoParamlessCtor.SourceGenerator.CodeGeneration
 {
     public readonly struct StructBlock
     {
+        public readonly StructDeclarationSyntax DeclarationSyntax;
+
         public readonly ITypeSymbol TypeSymbol;
 
         public readonly string Code;
@@ -15,8 +18,13 @@ namespace NoParamlessCtor.SourceGenerator.CodeGeneration
 
         public bool IsGenericType => GenericParamNames.Count != 0;
 
-        public StructBlock(ITypeSymbol typeSymbol, StructBody body)
+        public StructBlock(
+            StructDeclarationSyntax declarationSyntax,
+            ITypeSymbol typeSymbol,
+            StructBody body)
         {
+            DeclarationSyntax = declarationSyntax;
+
             TypeSymbol = typeSymbol;
 
             var accessModifier = typeSymbol.DeclaredAccessibility.ToText();
@@ -73,9 +81,13 @@ namespace NoParamlessCtor.SourceGenerator.CodeGeneration
                 $"<{string.Join(", ", genericParamNames)}>" :
                 string.Empty;
 
+            var isUnsafe = declarationSyntax.ContainsKeyword("unsafe");
+
+            var unsafeText = isUnsafe ? "unsafe " : string.Empty;
+
             Code =
             $$"""
-            {{accessModifier}} partial struct {{structNameText}}{{genericParamsText}}{{interfacesText}}
+            {{accessModifier}} {{unsafeText}}partial struct {{structNameText}}{{genericParamsText}}{{interfacesText}}
             {
                 {{body.Code.ToString().IndentTrailing()}}
             }
