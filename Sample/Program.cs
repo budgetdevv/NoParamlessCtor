@@ -1,6 +1,6 @@
 ﻿using NoParamlessCtor.Shared.Attributes;
 
-namespace Sample
+namespace Scratchpad
 {
     [NoParamlessCtor]
     public partial struct NonPrimaryCtor
@@ -41,7 +41,14 @@ namespace Sample
         public ref readonly int Text2 = ref t2;
     }
 
-    internal static class Program
+    [NoParamlessCtor]
+    public unsafe partial struct UnsafeCtor<T>(T* ptr)
+        where T: unmanaged
+    {
+        public T* Ptr = ptr;
+    }
+
+    internal static unsafe class Program
     {
         private static void Main(string[] args)
         {
@@ -56,6 +63,8 @@ namespace Sample
             // var inCtor = new InCtor();
             //
             // var genericCtor = new GenericCtor<int, int>();
+            //
+            // var unsafeCtor = new UnsafeCtor<int>();
 
             // Compiles fine with parameterized constructors
 
@@ -72,6 +81,8 @@ namespace Sample
             var t2 = 2;
 
             var genericCtor = new GenericCtor<int, int>(ref t1, in t2);
+
+            var unsafeCtor = new UnsafeCtor<int>(&t1);
         }
     }
 }

@@ -48,7 +48,7 @@ namespace Scratchpad
         public T* Ptr = ptr;
     }
 
-    internal static class Program
+    internal static unsafe class Program
     {
         private static void Main(string[] args)
         {
@@ -63,6 +63,8 @@ namespace Scratchpad
             // var inCtor = new InCtor();
             //
             // var genericCtor = new GenericCtor<int, int>();
+            //
+            // var unsafeCtor = new UnsafeCtor<int>();
 
             // Compiles fine with parameterized constructors
 
@@ -79,6 +81,8 @@ namespace Scratchpad
             var t2 = 2;
 
             var genericCtor = new GenericCtor<int, int>(ref t1, in t2);
+
+            var unsafeCtor = new UnsafeCtor<int>(&t1);
         }
     }
 }
