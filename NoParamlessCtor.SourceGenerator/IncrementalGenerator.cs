@@ -14,8 +14,6 @@ using NoParamlessCtor.SourceGenerator.Helpers;
 
 namespace NoParamlessCtor.SourceGenerator
 {
-    // Test f8de2bdfa35fdc7d5f0e8f0310a3512e5299ac0a
-
     [Generator]
 	public class IncrementalGenerator: IIncrementalGenerator
     {
