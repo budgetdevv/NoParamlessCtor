@@ -4,6 +4,8 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>preview</LangVersion>
         <Nullable>enable</Nullable>
+        <VersionPrefix>$(MainVersion)</VersionPrefix>
+        <VersionSuffix>$(AlphaVersion)</VersionSuffix>
     </PropertyGroup>
 
 </Project>

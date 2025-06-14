@@ -24,6 +24,8 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <!-- Do not include the generator as a lib dependency -->
     <IncludeBuildOutput>false</IncludeBuildOutput>
+    <VersionPrefix>$(MainVersion)</VersionPrefix>
+    <VersionSuffix>$(AlphaVersion)</VersionSuffix>
   </PropertyGroup>
 
   <ItemGroup>
