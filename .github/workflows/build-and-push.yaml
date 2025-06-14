@@ -62,7 +62,7 @@ jobs:
       - name: Build NuGet package ( SourceGenerator )
         working-directory: NoParamlessCtor.SourceGenerator
         run: |
-          dotnet build -c Release --no-restore
+          dotnet build -c Release
           dotnet pack -c Release -v:m /p:DownloadNativeFiles=true /p:MainVersion=${{ vars.MAIN_VERSION_NUMBER }} /p:AlphaVersion=${{ steps.set_alpha_version.outputs.ALPHA_VERSION }}
 
       - name: Publish NuGet package ( SourceGenerator )
