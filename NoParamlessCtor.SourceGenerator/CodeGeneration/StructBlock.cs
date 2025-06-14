@@ -31,29 +31,6 @@ namespace NoParamlessCtor.SourceGenerator.CodeGeneration
 
             var structNameText = typeSymbol.Name;
 
-            var interfaces = typeSymbol.Interfaces;
-
-            string interfacesText;
-
-            if (interfaces.Length != 0)
-            {
-                interfacesText = ": ";
-
-                const string SUFFIX = ", ";
-
-                foreach (var @interface in interfaces)
-                {
-                    interfacesText += $"{@interface.ToDisplayString()}{SUFFIX}";
-                }
-
-                interfacesText = interfacesText.AsSpan(0, interfacesText.Length - SUFFIX.Length).ToString();
-            }
-
-            else
-            {
-                interfacesText = string.Empty;
-            }
-
             List<string> genericParamNames;
 
             if (typeSymbol is INamedTypeSymbol namedTypeSymbol)
@@ -87,7 +64,7 @@ namespace NoParamlessCtor.SourceGenerator.CodeGeneration
 
             Code =
             $$"""
-            {{accessModifier}} {{unsafeText}}partial struct {{structNameText}}{{genericParamsText}}{{interfacesText}}
+            {{accessModifier}} {{unsafeText}}partial struct {{structNameText}}{{genericParamsText}}
             {
                 {{body.Code.ToString().IndentTrailing()}}
             }
