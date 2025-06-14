@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>preview</LangVersion>
-        <VersionPrefix>1.1.1</VersionPrefix>
+        <VersionPrefix>$(MainVersion)</VersionPrefix>
         <VersionSuffix>$(AlphaVersion)</VersionSuffix>
     </PropertyGroup>
 
@@ -18,13 +18,12 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\NoParamlessCtor.Shared\NoParamlessCtor.Shared.csproj" />
-        <ProjectReference Include="..\NoParamlessCtor.SourceGenerator\NoParamlessCtor.SourceGenerator.csproj"/>
+        <PackageReference Include="NoParamlessCtor.Shared"
+                          Version="$(MainVersion)-$(AlphaVersion)"
+        />
 
-        <ProjectReference
-            Include="..\NoParamlessCtor.SourceGenerator\NoParamlessCtor.SourceGenerator.csproj"
-            ReferenceOutputAssembly="false"
-            OutputItemType="Analyzer"
+        <PackageReference Include="NoParamlessCtor.SourceGenerator"
+                          Version="$(MainVersion)-$(AlphaVersion)"
         />
     </ItemGroup>
 </Project>

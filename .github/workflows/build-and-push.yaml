@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "NoParamlessCtor*/**"
 
 jobs:
   test-and-publish:
@@ -30,7 +28,7 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore
-        
+
       - name: Get short commit SHA
         id: vars
         run: echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
@@ -51,14 +49,53 @@ jobs:
           gh variable set ALPHA_VERSION_NUMBER -b "${{ steps.bump_version.outputs.NEW_ALPHA_VERSION_NUMBER }}"
 
       - name: Set Alpha Version
-        id: set_version
+        id: set_alpha_version
         run: |
           ALPHA_VERSION=alpha.${{ steps.bump_version.outputs.NEW_ALPHA_VERSION_NUMBER }}.${{ steps.vars.outputs.COMMIT_SHA }}
           echo "ALPHA_VERSION=$ALPHA_VERSION" >> $GITHUB_OUTPUT
 
+      - name: Set Main Version
+        id: set_main_version
+        run: |
+          MAIN_VERSION=${{ secrets.MAIN_VERSION_NUMBER }}
+          echo "MAIN_VERSION=$MAIN_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Build NuGet package ( Shared )
+        working-directory: NoParamlessCtor.Shared
+        run: dotnet pack -c Release -v:m --no-restore /p:DownloadNativeFiles=true /p:MainVersion=${{ steps.set_main_version.outputs.MAIN_VERSION }} /p:AlphaVersion=${{ steps.set_alpha_version.outputs.ALPHA_VERSION }}
+
+      - name: Publish NuGet package ( Shared )
+        working-directory: NoParamlessCtor.Shared
+        run: dotnet nuget push -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }} --skip-duplicate bin/Release/*.nupkg
+
+      - name: Build NuGet package ( SourceGenerator )
+        working-directory: NoParamlessCtor.SourceGenerator
+        run: |
+          dotnet build -c Release --no-restore
+          dotnet pack -c Release -v:m --no-restore /p:DownloadNativeFiles=true /p:MainVersion=${{ steps.set_main_version.outputs.MAIN_VERSION }} /p:AlphaVersion=${{ steps.set_alpha_version.outputs.ALPHA_VERSION }}
+
+      - name: Publish NuGet package ( SourceGenerator )
+        working-directory: NoParamlessCtor.SourceGenerator
+        run: dotnet nuget push -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }} --skip-duplicate bin/Release/*.nupkg
+
+      - name: Install  MartinCostello.WaitForNuGetPackage
+        run: dotnet tool install --global MartinCostello.WaitForNuGetPackage
+
+      - name: Combine Main and Alpha versions into FULL_VERSION
+        id: combine_versions
+        run: |
+            FULL_VERSION="${{ steps.set_main_version.outputs.MAIN_VERSION }}-${{ steps.set_alpha_version.outputs.ALPHA_VERSION }}"
+            echo "FULL_VERSION=$FULL_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Wait for NuGet package to be available ( Shared )
+        run: dotnet wait-for-package NoParamlessCtor.Shared@${{ steps.combine_versions.outputs.FULL_VERSION }} --timeout 00:15:00
+
+      - name: Wait for NuGet package to be available ( SourceGenerator )
+        run: dotnet wait-for-package NoParamlessCtor.SourceGenerator@${{ steps.combine_versions.outputs.FULL_VERSION }} --timeout 00:15:00
+
       - name: Build NuGet package ( Main )
         working-directory: NoParamlessCtor
-        run: dotnet pack -c Release -v:m --no-restore /p:DownloadNativeFiles=true /p:AlphaVersion=${{ steps.set_version.outputs.ALPHA_VERSION }}
+        run: dotnet pack -c Release -v:m --no-restore /p:DownloadNativeFiles=true /p:MainVersion=${{ steps.set_main_version.outputs.MAIN_VERSION }} /p:AlphaVersion=${{ steps.set_alpha_version.outputs.ALPHA_VERSION }}
 
       - name: Publish NuGet package ( Main )
         working-directory: NoParamlessCtor
