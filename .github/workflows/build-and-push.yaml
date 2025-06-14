@@ -51,14 +51,8 @@ jobs:
           ALPHA_VERSION=alpha.${{ steps.bump_version.outputs.NEW_ALPHA_VERSION_NUMBER }}.${{ steps.vars.outputs.COMMIT_SHA }}
           echo "ALPHA_VERSION=$ALPHA_VERSION" >> $GITHUB_OUTPUT
 
-      - name: Set Main Version
-        id: set_main_version
-        run: |
-          MAIN_VERSION=${{ secrets.MAIN_VERSION_NUMBER }}
-          echo "MAIN_VERSION=$MAIN_VERSION" >> $GITHUB_OUTPUT
-
       - name: Restore NuGet packages
-        run: dotnet restore /p:MainVersion=${{ steps.set_main_version.outputs.MAIN_VERSION }} /p:AlphaVersion=${{ steps.set_alpha_version.outputs.ALPHA_VERSION }}
+        run: dotnet restore /p:MainVersion=${{ vars.MAIN_VERSION_NUMBER }} /p:AlphaVersion=${{ steps.set_alpha_version.outputs.ALPHA_VERSION }}
 
       - name: Build NuGet package ( Shared )
         working-directory: NoParamlessCtor.Shared
