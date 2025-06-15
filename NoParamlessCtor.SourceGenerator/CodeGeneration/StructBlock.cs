@@ -27,38 +27,26 @@ namespace NoParamlessCtor.SourceGenerator.CodeGeneration
 
             TypeSymbol = typeSymbol;
 
-            var accessModifier = typeSymbol.DeclaredAccessibility.ToText();
+            TypeBlock.GetTypeMetadata(
+                declarationSyntax,
+                typeSymbol,
+                out var accessModifier,
+                out var structNameText,
+                out GenericParamNames,
+                out var genericParamsText,
+                out var isUnsafe
+            );
 
-            var structNameText = typeSymbol.Name;
-
-            var typeParams = typeSymbol.TypeParameters;
-
-            var genericParamNames = new List<string>(typeParams.Length);
-
-            GenericParamNames = genericParamNames;
-
-            foreach (var genericParam in typeParams)
-            {
-                genericParamNames.Add(genericParam.GetFullyQualifiedName());
-            }
-
-            var isGenericType = genericParamNames.Count != 0;
-
-            var genericParamsText = isGenericType ?
-                $"<{string.Join(", ", genericParamNames)}>" :
-                string.Empty;
-
-            var isUnsafe = declarationSyntax.ContainsKeyword("unsafe");
-
-            var unsafeText = isUnsafe ? "unsafe " : string.Empty;
-
-            Code =
-            $$"""
-            {{accessModifier}} {{unsafeText}}partial struct {{structNameText}}{{genericParamsText}}
-            {
-                {{body.Code.ToString().IndentTrailing()}}
-            }
-            """;
+            Code = TypeBlock.GenerateCode(
+                TypeBlockKind.Struct,
+                declarationSyntax,
+                typeSymbol,
+                accessModifier,
+                isUnsafe,
+                structNameText,
+                genericParamsText,
+                body.Code.ToString()
+            );
         }
 
         public string GenerateFileName()

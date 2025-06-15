@@ -48,8 +48,19 @@ namespace Scratchpad
         public T* Ptr = ptr;
     }
 
-    internal static unsafe class Program
+    internal static unsafe partial class Program
     {
+        public partial interface INestedInterface
+        {
+            [NoParamlessCtor]
+            public readonly partial struct NestedStruct(int t1, int t2)
+            {
+                public readonly int Value1 = t1;
+
+                public readonly int Value2 = t2;
+            }
+        }
+
         private static void Main(string[] args)
         {
             // Will generate compile error!
@@ -65,6 +76,8 @@ namespace Scratchpad
             // var genericCtor = new GenericCtor<int, int>();
             //
             // var unsafeCtor = new UnsafeCtor<int>();
+            //
+            // var nestedStruct = new INestedInterface.NestedStruct();
 
             // Compiles fine with parameterized constructors
 
@@ -83,6 +96,8 @@ namespace Scratchpad
             var genericCtor = new GenericCtor<int, int>(ref t1, in t2);
 
             var unsafeCtor = new UnsafeCtor<int>(&t1);
+
+            var nestedStruct = new INestedInterface.NestedStruct(t1, t2);
         }
     }
 }
