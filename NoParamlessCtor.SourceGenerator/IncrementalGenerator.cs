@@ -45,7 +45,7 @@ namespace NoParamlessCtor.SourceGenerator
                     .Any(x => x.Name.ToString() == NO_PARAM_CTOR_ATTRIBUTE_NAME);
             }
 
-            static (StructDeclarationSyntax declaration, ITypeSymbol? typeSymbol, SemanticModel semanticModel) GetStructTypeSymbols(
+            static (StructDeclarationSyntax declaration, INamedTypeSymbol? typeSymbol, SemanticModel semanticModel) GetStructTypeSymbols(
                 GeneratorSyntaxContext context,
                 CancellationToken cancellationToken)
             {
@@ -53,7 +53,7 @@ namespace NoParamlessCtor.SourceGenerator
 
                 var semanticModel = context.SemanticModel;
 
-                if (ModelExtensions.GetDeclaredSymbol(semanticModel, declaration, cancellationToken) is ITypeSymbol typeSymbol)
+                if (ModelExtensions.GetDeclaredSymbol(semanticModel, declaration, cancellationToken) is INamedTypeSymbol typeSymbol)
                 {
                     return (declaration, typeSymbol, semanticModel);
                 }
@@ -64,7 +64,7 @@ namespace NoParamlessCtor.SourceGenerator
 
         private static void GenerateSource(
             SourceProductionContext context,
-            ImmutableArray<(StructDeclarationSyntax declaration, ITypeSymbol? typeSymbol, SemanticModel semanticModel)> typeSymbols)
+            ImmutableArray<(StructDeclarationSyntax declaration, INamedTypeSymbol? typeSymbol, SemanticModel semanticModel)> typeSymbols)
         {
             foreach (var (declaration, typeSymbol, semanticModel) in typeSymbols)
             {

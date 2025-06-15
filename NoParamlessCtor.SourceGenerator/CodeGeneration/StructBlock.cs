@@ -20,7 +20,7 @@ namespace NoParamlessCtor.SourceGenerator.CodeGeneration
 
         public StructBlock(
             StructDeclarationSyntax declarationSyntax,
-            ITypeSymbol typeSymbol,
+            INamedTypeSymbol typeSymbol,
             StructBody body)
         {
             DeclarationSyntax = declarationSyntax;
@@ -31,25 +31,15 @@ namespace NoParamlessCtor.SourceGenerator.CodeGeneration
 
             var structNameText = typeSymbol.Name;
 
-            List<string> genericParamNames;
+            var typeParams = typeSymbol.TypeParameters;
 
-            if (typeSymbol is INamedTypeSymbol namedTypeSymbol)
+            var genericParamNames = new List<string>(typeParams.Length);
+
+            GenericParamNames = genericParamNames;
+
+            foreach (var genericParam in typeParams)
             {
-                var typeParams = namedTypeSymbol.TypeParameters;
-
-                genericParamNames = new List<string>(typeParams.Length);
-
-                GenericParamNames = genericParamNames;
-
-                foreach (var genericParam in typeParams)
-                {
-                    genericParamNames.Add(genericParam.GetFullyQualifiedName());
-                }
-            }
-
-            else
-            {
-                genericParamNames = [];
+                genericParamNames.Add(genericParam.GetFullyQualifiedName());
             }
 
             var isGenericType = genericParamNames.Count != 0;
