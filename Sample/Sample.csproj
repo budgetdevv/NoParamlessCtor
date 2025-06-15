@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="NoParamlessCtor" Version="1.1.1-alpha.17.cd35b52" />
+        <PackageReference Include="NoParamlessCtor" Version="1.1.1-alpha.28.a8682da" />
     </ItemGroup>
 
 </Project>
