@@ -128,7 +128,7 @@ namespace NoParamlessCtor.SourceGenerator.CodeGeneration
                 $"<{string.Join(", ", genericParamNamesList)}>" :
                 string.Empty;
 
-            isUnsafe = declarationSyntax.ContainsKeyword("unsafe");
+            isUnsafe = declarationSyntax.ContainsKeyword(SyntaxKind.UnsafeKeyword);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

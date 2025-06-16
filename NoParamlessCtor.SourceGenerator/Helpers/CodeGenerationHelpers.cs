@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace NoParamlessCtor.SourceGenerator.Helpers
@@ -51,71 +52,32 @@ namespace NoParamlessCtor.SourceGenerator.Helpers
             return typeSymbol.ToDisplayString(format);
         }
 
-        public static bool IsPartial(this ITypeSymbol typeSymbol)
+        public static bool ContainsKeyword(this ParameterSyntax parameter, SyntaxKind keyword)
         {
-            return typeSymbol.DeclaringSyntaxReferences
-                .Select(x => x.GetSyntax())
-                .OfType<ClassDeclarationSyntax>()
-                .Any(x => x.Modifiers.Any(y => y.ValueText == "partial"));
+            return parameter
+                .Modifiers
+                .Any(x => x.IsKind(keyword));
         }
 
-        public static bool ContainsKeyword(
-            this IPropertySymbol property,
-            string keyword)
+        public static bool ContainsKeyword(this ParameterSyntax parameter, SyntaxKind[] keywords)
         {
-            return property.ContainsKeyword([ keyword ]);
+            return parameter
+                .Modifiers
+                .Any(x => keywords.Contains(x.Kind()));
         }
 
-        public static bool ContainsKeyword(
-            this IPropertySymbol property,
-            string[] keywords)
-        {
-            return property.DeclaringSyntaxReferences
-                .Select(x => x.GetSyntax())
-                .OfType<PropertyDeclarationSyntax>()
-                .Any(x =>
-                {
-                    var modifiers = x.Modifiers.Select(y => y.ValueText);
-
-                    return keywords.All(y => modifiers.Contains(y));
-                });
-        }
-
-        public static bool IsPartial(this IPropertySymbol property)
-        {
-            return property.ContainsKeyword("partial");
-        }
-
-        public static bool HasRequiredKeyword(this IPropertySymbol property)
-        {
-            return property.ContainsKeyword("required");
-        }
-
-        public static bool ContainsKeyword(this ParameterSyntax parameter, string keyword)
-        {
-            return parameter.Modifiers.Any(x => x.ValueText == keyword);
-        }
-
-        public static bool ContainsKeyword(this ParameterSyntax parameter, string[] keywords)
-        {
-            return parameter.Modifiers
-                .Select(x => x.ValueText)
-                .Any(keywords.Contains);
-        }
-
-        public static bool ContainsKeyword(this TypeDeclarationSyntax declarationSyntax, string[] keywords)
+        public static bool ContainsKeyword(this TypeDeclarationSyntax declarationSyntax, SyntaxKind keyword)
         {
             return declarationSyntax
                 .Modifiers
-                .Select(x => x.ValueText)
-                .Any(keywords.Contains);
+                .Any(x => x.IsKind(keyword));
         }
 
-        public static bool ContainsKeyword(this TypeDeclarationSyntax declarationSyntax, string keyword)
+        public static bool ContainsKeyword(this TypeDeclarationSyntax declarationSyntax, SyntaxKind[] keywords)
         {
             return declarationSyntax
                 .Modifiers
-                .Any(x => x.ValueText == keyword);
+                .Any(x => keywords.Contains(x.Kind()));
         }
 
         public static bool ContainsAttributes(this ISymbol symbol, string[] attributeNames)

@@ -97,9 +97,9 @@ namespace NoParamlessCtor.SourceGenerator
 
                         var paramTypeFQN = paramTypeInfo.GetFullyQualifiedName();
 
-                        var isRef = primaryCtorParam.ContainsKeyword("ref");
+                        var isRef = primaryCtorParam.ContainsKeyword(SyntaxKind.RefKeyword);
 
-                        var isIn = primaryCtorParam.ContainsKeyword("in");
+                        var isIn = primaryCtorParam.ContainsKeyword(SyntaxKind.InKeyword);
 
                         string addedText;
 
