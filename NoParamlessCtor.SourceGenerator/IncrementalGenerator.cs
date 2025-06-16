@@ -33,8 +33,7 @@ namespace NoParamlessCtor.SourceGenerator
 
             static bool Predicate(SyntaxNode node, CancellationToken cancellationToken)
             {
-                if (node is not StructDeclarationSyntax structDeclaration ||
-                    !structDeclaration.Modifiers.Any(x => x.IsKind(SyntaxKind.PartialKeyword)))
+                if (node is not StructDeclarationSyntax structDeclaration)
                 {
                     return false;
                 }
