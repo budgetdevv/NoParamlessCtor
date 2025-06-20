@@ -53,7 +53,7 @@ jobs:
 
       - name: Build NuGet package ( Shared )
         working-directory: NoParamlessCtor.Shared
-        run: dotnet pack -c Release -v:m /p:DownloadNativeFiles=true /p:MainVersion=${{ vars.MAIN_VERSION_NUMBER }} /p:AlphaVersion=${{ steps.set_alpha_version.outputs.ALPHA_VERSION }}
+        run: dotnet pack -c Release -v:m /p:MainVersion=${{ vars.MAIN_VERSION_NUMBER }} /p:AlphaVersion=${{ steps.set_alpha_version.outputs.ALPHA_VERSION }}
 
       - name: Publish NuGet package ( Shared )
         working-directory: NoParamlessCtor.Shared
@@ -63,7 +63,7 @@ jobs:
         working-directory: NoParamlessCtor.SourceGenerator
         run: |
           dotnet build -c Release
-          dotnet pack -c Release -v:m /p:DownloadNativeFiles=true /p:MainVersion=${{ vars.MAIN_VERSION_NUMBER }} /p:AlphaVersion=${{ steps.set_alpha_version.outputs.ALPHA_VERSION }}
+          dotnet pack -c Release -v:m /p:MainVersion=${{ vars.MAIN_VERSION_NUMBER }} /p:AlphaVersion=${{ steps.set_alpha_version.outputs.ALPHA_VERSION }}
 
       - name: Publish NuGet package ( SourceGenerator )
         working-directory: NoParamlessCtor.SourceGenerator
@@ -86,7 +86,7 @@ jobs:
 
       - name: Build NuGet package ( Main )
         working-directory: NoParamlessCtor
-        run: dotnet pack -c Release -v:m /p:DownloadNativeFiles=true /p:MainVersion=${{ vars.MAIN_VERSION_NUMBER }} /p:AlphaVersion=${{ steps.set_alpha_version.outputs.ALPHA_VERSION }}
+        run: dotnet pack -c Release -v:m /p:MainVersion=${{ vars.MAIN_VERSION_NUMBER }} /p:AlphaVersion=${{ steps.set_alpha_version.outputs.ALPHA_VERSION }}
 
       - name: Publish NuGet package ( Main )
         working-directory: NoParamlessCtor
