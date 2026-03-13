@@ -108,14 +108,16 @@ namespace NoParamlessCtor.SourceGenerator.Helpers
             return property.NullableAnnotation == NullableAnnotation.Annotated;
         }
 
-        public static IEnumerable<ParameterSyntax> GetPrimaryConstructorParams(this StructDeclarationSyntax declaration)
+        public static IEnumerable<ParameterSyntax> GetPrimaryConstructorParams(this TypeDeclarationSyntax declaration)
         {
-            if (declaration.ParameterList == null)
+            var parameterList = declaration.ParameterList;
+
+            if (parameterList == null)
             {
                 yield break;
             }
 
-            foreach (var parameter in declaration.ParameterList.Parameters)
+            foreach (var parameter in parameterList.Parameters)
             {
                 yield return parameter;
             }

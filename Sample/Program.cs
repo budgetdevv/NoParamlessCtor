@@ -48,6 +48,23 @@ namespace Sample
         public T* Ptr = ptr;
     }
 
+    [NoParamlessCtor]
+    public partial record struct RecordNonPrimaryCtor
+    {
+        public string Text;
+
+        public RecordNonPrimaryCtor(string text)
+        {
+            Text = text;
+        }
+    }
+
+    [NoParamlessCtor]
+    public partial record struct RecordPrimaryCtor(string Text1, string Text2);
+
+    [NoParamlessCtor]
+    public partial record struct GenericRecord<T>(T Value);
+
     internal static unsafe partial class Program
     {
         public partial interface INestedInterface
@@ -78,6 +95,12 @@ namespace Sample
             // var unsafeCtor = new UnsafeCtor<int>();
             //
             // var nestedStruct = new INestedInterface.NestedStruct();
+            //
+            // var recordNonPrimaryCtor = new RecordNonPrimaryCtor();
+            //
+            // var recordPrimaryCtor = new RecordPrimaryCtor();
+            //
+            // var genericRecord = new GenericRecord<int>();
 
             // Compiles fine with parameterized constructors
 
@@ -98,6 +121,12 @@ namespace Sample
             var unsafeCtor = new UnsafeCtor<int>(&t1);
 
             var nestedStruct = new INestedInterface.NestedStruct(t1, t2);
+
+            var recordNonPrimaryCtor = new RecordNonPrimaryCtor("Hello");
+
+            var recordPrimaryCtor = new RecordPrimaryCtor("Hello", "World");
+
+            var genericRecord = new GenericRecord<int>(42);
         }
     }
 }

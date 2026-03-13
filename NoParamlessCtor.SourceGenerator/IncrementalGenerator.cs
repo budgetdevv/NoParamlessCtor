@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -33,22 +33,29 @@ namespace NoParamlessCtor.SourceGenerator
 
             static bool Predicate(SyntaxNode node, CancellationToken cancellationToken)
             {
-                if (node is not StructDeclarationSyntax structDeclaration)
+                switch (node)
                 {
-                    return false;
+                    case StructDeclarationSyntax:
+                    case RecordDeclarationSyntax recordDeclaration when recordDeclaration.ClassOrStructKeyword.IsKind(SyntaxKind.StructKeyword):
+                        break;
+
+                    default:
+                        return false;
                 }
 
-                return structDeclaration
+                var typeDeclaration = (TypeDeclarationSyntax) node;
+
+                return typeDeclaration
                     .AttributeLists
                     .SelectMany(x => x.Attributes)
                     .Any(x => x.Name.ToString() == NO_PARAM_CTOR_ATTRIBUTE_NAME);
             }
 
-            static (StructDeclarationSyntax declaration, INamedTypeSymbol? typeSymbol, SemanticModel semanticModel) GetStructTypeSymbols(
+            static (TypeDeclarationSyntax declaration, INamedTypeSymbol? typeSymbol, SemanticModel semanticModel) GetStructTypeSymbols(
                 GeneratorSyntaxContext context,
                 CancellationToken cancellationToken)
             {
-                var declaration = (StructDeclarationSyntax) context.Node;
+                var declaration = (TypeDeclarationSyntax) context.Node;
 
                 var semanticModel = context.SemanticModel;
 
@@ -63,7 +70,7 @@ namespace NoParamlessCtor.SourceGenerator
 
         private static void GenerateSource(
             SourceProductionContext context,
-            ImmutableArray<(StructDeclarationSyntax declaration, INamedTypeSymbol? typeSymbol, SemanticModel semanticModel)> typeSymbols)
+            ImmutableArray<(TypeDeclarationSyntax declaration, INamedTypeSymbol? typeSymbol, SemanticModel semanticModel)> typeSymbols)
         {
             foreach (var (declaration, typeSymbol, semanticModel) in typeSymbols)
             {

@@ -7,7 +7,7 @@ namespace NoParamlessCtor.SourceGenerator.CodeGeneration
 {
     public readonly struct StructBlock
     {
-        public readonly StructDeclarationSyntax DeclarationSyntax;
+        public readonly TypeDeclarationSyntax DeclarationSyntax;
 
         public readonly ITypeSymbol TypeSymbol;
 
@@ -18,7 +18,7 @@ namespace NoParamlessCtor.SourceGenerator.CodeGeneration
         public bool IsGenericType => GenericParamNames.Count != 0;
 
         public StructBlock(
-            StructDeclarationSyntax declarationSyntax,
+            TypeDeclarationSyntax declarationSyntax,
             INamedTypeSymbol typeSymbol,
             StructBody body)
         {
@@ -36,8 +36,10 @@ namespace NoParamlessCtor.SourceGenerator.CodeGeneration
                 out var isUnsafe
             );
 
+            var blockKind = TypeBlock.GetBlockKind(declarationSyntax);
+
             Code = TypeBlock.GenerateCode(
-                TypeBlockKind.Struct,
+                blockKind,
                 declarationSyntax,
                 typeSymbol,
                 accessModifier,
